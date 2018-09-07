@@ -6,7 +6,7 @@ var surnames = ['да Марья', 'Верон', 'Мирабелла', 'Валь
 var coatColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var eyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
 
-// функция генерации случайного волшебника
+// функция генерации случайного волшебника. Вернет объект, одного волшебника
 var getRandomWizard = function () {
   var wizard = {};
   var nameRandomIndex = Math.floor(names.length * Math.random());
@@ -17,34 +17,40 @@ var getRandomWizard = function () {
   return wizard;
 };
 
-// создадим массив объектов волшебников
+// функция для отрисовки волшебника. Вернет сгенерированный DOM элемент согласно шаблону и  переданным данным в виде JS объекта
+var renderWizard = function (wizardData) {
+  // берем шаблон разметки и сохраняем в wizardElement
+  var wizardElement = document.querySelector('#similar-wizard-template').content.cloneNode(true);
+  // задаем имя волшебника
+  var wizardName = wizardElement.querySelector('.setup-similar-label');
+  wizardName.textContent = wizardData.name;
+  // задаем цвет плаща
+  var wizardCoat = wizardElement.querySelector('.wizard-coat');
+  wizardCoat.style.fill = wizardData.coatColor;
+  // задаем цвет глаз
+  var wizardEyes = wizardElement.querySelector('.wizard-eyes');
+  wizardEyes.style.fill = wizardData.eyesColor;
+  return wizardElement;
+};
+
+// создаем массив объектов волшебников
 var wizards = [];
 for (var i = 0; i < 4; i++) {
   wizards[i] = getRandomWizard();
 }
 
-// включаем блок настройки персонажа 'setup'
+// находим и включаем видимость блока настройки волшебника
 document.querySelector('.setup').classList.remove('hidden');
 
-// сохраним шаблон разметки в переменную wizardTemplate
-var wizardTemplate = document.querySelector('#similar-wizard-template').content;
-// список волшебников сохраним в wizardList
+// находим список волшебников сохраняем в wizardList
 var wizardList = document.querySelector('.setup-similar-list');
 
+// циклом генерим волшебников и добавляем их в wizardList
 for (i = 0; i < wizards.length; i++) {
-  // клонируем шаблон
-  var wizard = wizardTemplate.cloneNode(true);
-  // задаем имя волшебника
-  var wizardName = wizard.querySelector('.setup-similar-label');
-  wizardName.textContent = wizards[i].name;
-  // изменим цвет плаща
-  var wizardCoat = wizard.querySelector('.wizard-coat');
-  wizardCoat.style.fill = wizards[i].coatColor;
-  // изменим цвет глаз
-  var wizardEyes = wizard.querySelector('.wizard-eyes');
-  wizardEyes.style.fill = wizards[i].eyesColor;
+  var wizard = renderWizard(wizards[i]);
   wizardList.appendChild(wizard);
 }
 
-// включаем видимость блока похожих персонажей 'setup-similar'
+// включаем видимость блока похожих волшебников 'setup-similar' после добавления в него волшебников
 document.querySelector('.setup-similar').classList.remove('hidden');
+
