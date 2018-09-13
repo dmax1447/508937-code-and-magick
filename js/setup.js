@@ -68,15 +68,7 @@ document.querySelector('.setup-similar').classList.remove('hidden');
 var setupWindow = document.querySelector('.setup');
 var setupOpenIcon = document.querySelector('.setup-open');
 var setupCloseIcon = setupWindow.querySelector('.setup-close');
-var userNameInput = document.querySelector('.setup-user-name');
 var setupWizard = document.querySelector('.setup-wizard');
-var wizardCoat = setupWizard.querySelector('.wizard-coat');
-var wizardEyes = setupWizard.querySelector('.wizard-eyes');
-var setupFireball = document.querySelector('.setup-fireball-wrap');
-var inputCoatColor = document.querySelector('input[name="coat-color"]');
-var inputEyesColor = document.querySelector('input[name="eyes-color"]');
-var inputFireball = document.querySelector('input[name="fireball-color"]');
-var randomColor;
 
 // функции открытия и закрытия окна setup
 var openSetupWindow = function () {
@@ -119,30 +111,40 @@ setupCloseIcon.addEventListener('keydown', function (evt) {
   }
 });
 
-// Изменение цвета мантии персонажа по нажатию. Цвет мантии .setup-wizard .wizard-coat должен обновляться по нажатию на неё.
+// функция для изменения цвета элемента волшебника и соответствующего инпута
+var setColor = function (domElement, domElementProperty, colors, inputElement) {
+  var color = getRandomElement(colors);
+  domElement.style[domElementProperty] = color;
+  inputElement.value = color;
+};
+
+// изменим цвет плаща по клику и запишем цвет в нужный инпут
+var wizardCoat = setupWizard.querySelector('.wizard-coat');
+var inputCoatColor = document.querySelector('input[name="coat-color"]');
+
 wizardCoat.addEventListener('click', function () {
-  randomColor = getRandomElement(coatColors);
-  wizardCoat.style.fill = randomColor;
-  inputCoatColor.value = randomColor;
-
+  setColor(wizardCoat, 'fill', coatColors, inputCoatColor);
 });
 
-// Изменение цвета глаз персонажа по нажатию. Цвет глаз волшебника меняется по нажатию на блок .setup-wizard .wizard-eyes.
+// Изменение цвета глаз персонажа по клику и запишем цвет в нужный инпут
+var wizardEyes = setupWizard.querySelector('.wizard-eyes');
+var inputEyesColor = document.querySelector('input[name="eyes-color"]');
+
 wizardEyes.addEventListener('click', function () {
-  randomColor = getRandomElement(eyesColors);
-  wizardEyes.style.fill = randomColor;
-  inputEyesColor.value = randomColor;
+  setColor(wizardEyes, 'fill', eyesColors, inputEyesColor);
 });
 
-// Изменение цвета фаерболов по нажатию. Цвет задаётся через изменение фона у блока .setup-fireball-wrap
+// Изменение цвета фаерболов по клику и запишем цвет в нужный инпут
+var setupFireball = document.querySelector('.setup-fireball-wrap');
+var inputFireball = document.querySelector('input[name="fireball-color"]');
+
 setupFireball.addEventListener('click', function () {
-  randomColor = getRandomElement(fireballColors);
-  setupFireball.style.background = randomColor;
-  inputFireball.value = randomColor;
+  setColor(setupFireball, 'background', fireballColors, inputFireball);
 });
 
 
-// обработка ошибок при вводе имени
+// обработка ошибок при вводе имени, добавим сообщения на русском
+var userNameInput = document.querySelector('.setup-user-name');
 userNameInput.addEventListener('invalid', function () {
   if (userNameInput.validity.tooShort) {
     userNameInput.setCustomValidity('Имя должно состоять минимум из 2-х символов');
