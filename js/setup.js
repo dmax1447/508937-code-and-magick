@@ -55,11 +55,14 @@ document.querySelector('.setup').classList.remove('hidden');
 // находим список волшебников сохраняем в wizardList
 var wizardList = document.querySelector('.setup-similar-list');
 
-// циклом генерим волшебников и добавляем их в wizardList
+// циклом генерим волшебников и добавляем их в фрагмент
+// фрагмент после заполнения добавим в wizardlist
+var fragment = document.createDocumentFragment();
 for (i = 0; i < wizards.length; i++) {
   var wizard = renderWizard(wizards[i]);
-  wizardList.appendChild(wizard);
+  fragment.appendChild(wizard);
 }
+wizardList.appendChild(fragment);
 
 // включаем видимость блока похожих волшебников 'setup-similar' после добавления в него волшебников
 document.querySelector('.setup-similar').classList.remove('hidden');
