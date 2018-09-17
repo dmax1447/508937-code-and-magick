@@ -1,14 +1,19 @@
 'use strict';
 
+
+// -- utils.js НАЧАЛО: служебные данные и функции
 // массивы для генерации волшебников
 var names = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var surnames = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var coatColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var eyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
 var fireballColors = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
-var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
 
+// функция для выбора рандомного элемента в массиве
+var getRandomElement = function (array) {
+  var index = Math.floor(array.length * Math.random());
+  return array[index];
+};
 
 // функция генерации случайного волшебника. Вернет объект, одного волшебника
 var getRandomWizard = function () {
@@ -37,12 +42,6 @@ var renderWizard = function (wizardData) {
   return wizardElement;
 };
 
-var getRandomElement = function (array) {
-  var index = Math.floor(array.length * Math.random());
-  return array[index];
-};
-
-
 // создаем массив объектов волшебников
 var wizards = [];
 for (var i = 0; i < 4; i++) {
@@ -67,47 +66,49 @@ wizardList.appendChild(fragment);
 // включаем видимость блока похожих волшебников 'setup-similar' после добавления в него волшебников
 document.querySelector('.setup-similar').classList.remove('hidden');
 
+
+// --- модуль: работа с окном setup
 // найдем и сохраним окно и элементы его управления
 var setupWindow = document.querySelector('.setup');
 var setupOpenIcon = document.querySelector('.setup-open');
 var setupCloseIcon = setupWindow.querySelector('.setup-close');
 var setupWizard = document.querySelector('.setup-wizard');
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 
 // функции открытия и закрытия окна setup
 var openSetupWindow = function () {
   setupWindow.classList.remove('hidden');
 };
-
 var closeSetupWindow = function () {
   setupWindow.classList.add('hidden');
 };
 
-// Окно.setup должно открываться по нажатию на блок.setup-open. Открытие окна производится удалением класса hidden у блока
+// добавляем обработчик: открытие окна по клику на иконку пользователя
 setupOpenIcon.addEventListener('click', function () {
   openSetupWindow();
 });
 
-// Окно.setup должно закрываться по нажатию на элемент.setup-close, расположенный внутри окна
+// добавляем обработчик: закрытие окна по клику на иконку крестик
 setupCloseIcon.addEventListener('click', function () {
   closeSetupWindow();
 });
 
-// Когда иконка пользователя в фокусе .setup-open-icon, то окно настройки персонажа должно открываться по нажатию кнопки ENTER
+// добавляем обработчик: открытие окна по нажатию ENTER
 setupOpenIcon.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     openSetupWindow();
   }
 });
 
-// Когда окно настройки персонажа открыто, нажатие на клавишу ESC должно закрывать диалог
-// Если фокус находится на форме ввода имени, то окно закрываться не должно.
+// добавляем обработчик: закрытие окна ESC при условии что поле ввода имени не в фокусе
 document.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ESC_KEYCODE && !(document.activeElement === userNameInput)) {
     closeSetupWindow();
   }
 });
 
-// Если окно открыто и фокус находится на кнопке закрытия окна, то нажатие клавиши ENTER должно приводить к закрытию диалога
+// добавляем обработчик: закрытие окна по ENTER когда в фокусе иконка крестик
 setupCloseIcon.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     closeSetupWindow();
@@ -120,27 +121,21 @@ var setColor = function (domElement, domElementProperty, colors, inputElement) {
   domElement.style[domElementProperty] = color;
   inputElement.value = color;
 };
-
-// изменим цвет плаща по клику и запишем цвет в нужный инпут
+// добавляем обработчик: по клику на плащ меняем цвет плаща и значение цвета в инпуте
 var wizardCoat = setupWizard.querySelector('.wizard-coat');
 var inputCoatColor = document.querySelector('input[name="coat-color"]');
-
 wizardCoat.addEventListener('click', function () {
   setColor(wizardCoat, 'fill', coatColors, inputCoatColor);
 });
-
-// Изменение цвета глаз персонажа по клику и запишем цвет в нужный инпут
+// добавляем обработчик: по клику на глаза меняем цвет глаз и значение цвета в инпуте
 var wizardEyes = setupWizard.querySelector('.wizard-eyes');
 var inputEyesColor = document.querySelector('input[name="eyes-color"]');
-
 wizardEyes.addEventListener('click', function () {
   setColor(wizardEyes, 'fill', eyesColors, inputEyesColor);
 });
-
-// Изменение цвета фаерболов по клику и запишем цвет в нужный инпут
+// добавляем обработчик: по клику на глаза меняем цвет глаз и значение цвета в инпуте
 var setupFireball = document.querySelector('.setup-fireball-wrap');
 var inputFireball = document.querySelector('input[name="fireball-color"]');
-
 setupFireball.addEventListener('click', function () {
   setColor(setupFireball, 'background', fireballColors, inputFireball);
 });
