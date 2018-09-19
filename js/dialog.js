@@ -14,6 +14,8 @@
   var setup = document.querySelector('.setup');
   var setupUserPic = setup.querySelector('input[name="avatar"]');
   var setupCloseIcon = setup.querySelector('.setup-close');
+  var maxX = document.body.clientWidth - 100;
+  var maxY = document.body.clientHeight - 100;
 
   // обработчик нажатия кнопки мышки
   var onMouseDown = function (evt) {
@@ -21,14 +23,24 @@
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       dragged = true;
+      var mouseX;
+      var mouseY;
+      if (moveEvt.clientX > 0 && moveEvt.clientX < maxX) {
+        mouseX = moveEvt.clientX;
+      }
+      if (moveEvt.clientY > 0 && moveEvt.clientY < maxY) {
+        mouseY = moveEvt.clientY;
+      }
+
       var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+        x: startCoords.x - mouseX,
+        y: startCoords.y - mouseY
       };
       startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
+        x: mouseX,
+        y: mouseY
       };
+
       setup.style.top = (setup.offsetTop - shift.y) + 'px';
       setup.style.left = (setup.offsetLeft - shift.x) + 'px';
     };

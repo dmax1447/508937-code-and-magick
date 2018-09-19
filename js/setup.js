@@ -4,7 +4,6 @@
 // использует utils.js
 (function () {
   // находим и включаем видимость блока настройки персонажа
-  document.querySelector('.setup').classList.remove('hidden');
   // найдем и сохраним окно и элементы его управления
   var setupWindow = document.querySelector('.setup');
   var setupOpenIcon = document.querySelector('.setup-open');
