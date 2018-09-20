@@ -14,8 +14,10 @@
   var setup = document.querySelector('.setup');
   var setupUserPic = setup.querySelector('input[name="avatar"]');
   var setupCloseIcon = setup.querySelector('.setup-close');
-  var maxX = document.body.clientWidth - 100;
-  var maxY = document.body.clientHeight - 100;
+  var SETUP_WIDTH = 800;
+  var SETUP_HEIGHT = 550;
+  var maxX = document.body.clientWidth - SETUP_WIDTH;
+  var maxY = document.body.clientHeight - SETUP_HEIGHT;
 
   // обработчик нажатия кнопки мышки
   var onMouseDown = function (evt) {
@@ -25,10 +27,10 @@
       dragged = true;
       var mouseX;
       var mouseY;
-      if (moveEvt.clientX > 0 && moveEvt.clientX < maxX) {
+      if (moveEvt.clientX > 40 && moveEvt.clientX < maxX) {
         mouseX = moveEvt.clientX;
       }
-      if (moveEvt.clientY > 0 && moveEvt.clientY < maxY) {
+      if (moveEvt.clientY > 40 && moveEvt.clientY < maxY) {
         mouseY = moveEvt.clientY;
       }
 
