@@ -34,24 +34,6 @@
     inputElement.value = color;
   };
 
-  // коллбек на ошибку, показывает сообщение с описанием ошибки
-  var showError = function (errMessage) {
-    // var fragment = document.createDocumentFragment();
-    // fragment.textContent = 'Список не загрузился: ' + errMessage;
-    // wizardList.appendChild(fragment);
-    // setupSimilar.classList.remove('hidden');
-    console.log('опять жопа');
-    var node = document.createElement('div');
-    node.style = 'z-index: 100, margin: 0 auto, text-align: center; background-color: red;';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
-    node.textContent = 'Все пропало: ' + errMessage;
-    document.body.appendChild(node);
-  };
-
-
   // добавляем обработчик: открытие окна по клику на иконку пользователя
   setupOpenIcon.addEventListener('click', function () {
     openSetupWindow();
@@ -116,7 +98,7 @@
 
     // запускаем функцию save из модуля backend, ей передаем объект FormData сгенерированный из данных формы
     // и в качестве коллбека на успешное завершение - функцию закрытия окна
-    window.backend.save(new FormData(form), closeSetupWindow, showError);
+    window.backend.save(new FormData(form), closeSetupWindow, window.utils.showError);
     evt.preventDefault(); // убираем действие по умолчанию
   };
 

@@ -15,17 +15,16 @@
       xhr.responseType = 'json';
       xhr.addEventListener('load', function () {
         if (xhr.status === 200) {
-          console.log('загрузка списка волшебников с сервера: УСПЕШНО');
           onSuccess(xhr.response);
         } else {
           onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
         }
       });
       xhr.addEventListener('error', function () {
-        onError('Произошла ошибка соединения');
+        onError('Список волшебников не загрузился: ошибка соединения');
       });
       xhr.addEventListener('timeout', function () {
-        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+        onError('Список волшебников не загрузился: запрос не успел выполниться за ' + xhr.timeout + 'мс');
       });
       xhr.timeout = 10000; // 10s
       xhr.open('GET', getURL);
@@ -37,17 +36,14 @@
     save: function (data, onSuccess, onError) {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
-      xhr.addEventListener = ('load', function () {
-        // console.log('загрузка формы НА сервер: УСПЕШНО');
-        onSuccess();
+      xhr.addEventListener('load', function () {
+        onSuccess(xhr.response);
       });
       xhr.addEventListener('error', function () {
-        console.log('ошибка соединения - зовем onError');
-        onError('Произошла ошибка соединения');
+        onError('Форма не загружена на сервер: ошибка соединения');
       });
       xhr.addEventListener('timeout', function () {
-        console.log('ошибка: таймаут - зовем onError');
-        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+        onError('Форма не загружена на сервер: запрос не успел выполниться за ' + xhr.timeout + 'мс');
       });
       xhr.timeout = 10000; // 10s
       xhr.open('POST', postURL);

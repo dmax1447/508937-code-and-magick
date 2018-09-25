@@ -8,7 +8,6 @@
   var wizardList = document.querySelector('.setup-similar-list'); // находим список волшебников сохраняем в wizardList
   var setupSimilar = document.querySelector('.setup-similar'); // блок похожих волшебников
 
-
   // функция для отрисовки волшебника. Вернет сгенерированный DOM элемент согласно шаблону и  переданным данным в виде JS объекта
   var renderWizard = function (wizardData) {
     // берем шаблон разметки и сохраняем в wizardElement
@@ -33,16 +32,10 @@
     setupSimilar.classList.remove('hidden'); // показываем блок похожих волшебников
   };
 
-  // коллбек для вывода сообщений при ошибке загрузки
-  var showErrorMessage = function (errMessage) {
-    var fragment = document.createDocumentFragment();
-    fragment.textContent = 'Список не загрузился: ' + errMessage;
-    wizardList.appendChild(fragment);
-    setupSimilar.classList.remove('hidden');
-  };
-
+  // коллбек на ошибку, показывает сообщение с описанием ошибки
   // загрузка списка волшебников с сервера
   // при успешной загрузке зовет коллбек renderList (рисует список похожих волшебников)
-  window.backend.load(renderList, showErrorMessage);
+  // при ошибке зовет функцию показа ошибки
+  window.backend.load(renderList, window.utils.showError);
 
 })();
