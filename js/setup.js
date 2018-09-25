@@ -16,6 +16,8 @@
   var wizardEyes = setupWizard.querySelector('.wizard-eyes');
   var inputEyesColor = document.querySelector('input[name="eyes-color"]');
   var userNameInput = document.querySelector('.setup-user-name');
+  var form = document.querySelector('.setup-wizard-form');
+  var btnSubmit = document.querySelector('.setup-submit'); // кнопка
 
   // функции открытия и закрытия окна setup
   var openSetupWindow = function () {
@@ -90,5 +92,17 @@
       userNameInput.setCustomValidity('');
     }
   });
+
+  // обработчик клика по кнопке сохранить
+  var onBtnSubmitClick = function (evt) {
+    evt.preventDefault(); // убираем действие по умолчанию
+    // запускаем функцию save из модуля backend, ей передаем объект FormData сгенерированный из данных формы
+    // и в качестве коллбека на успешное завершение - функцию закрытия окна
+    window.backend.save(new FormData(form), closeSetupWindow());
+  };
+
+  // добавляем обработчик на кнопку отправить
+  btnSubmit.addEventListener('click', onBtnSubmitClick);
+
 })();
 
