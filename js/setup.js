@@ -38,9 +38,10 @@
   // обработчик клика по кнопке сохранить
   var onBtnSubmitClick = function (evt) {
     evt.preventDefault(); // убираем действие по умолчанию
-    // запускаем функцию hhtp запрос из модуля backend, ей передаем коллбеки:
-    // успех: закрыть окно, ошибка: вывести сообщение об ошибке, адрес для отправки, метод запроса, данные
-    window.backend.makeRequest(closeSetupWindow, window.utils.showError, POST_URL, 'POST', new FormData(form));
+    // готовим запрос, при успехе - коллбек на закрытие окна, при ошибке - вывести ошибку
+    var saveFormDataXhr = window.backend.makeXhr(closeSetupWindow, window.utils.showError);
+    // высылаем запрос с данными
+    window.backend.save(saveFormDataXhr, POST_URL, new FormData(form));
   };
 
   // добавляем обработчик: открытие окна по клику на иконку пользователя

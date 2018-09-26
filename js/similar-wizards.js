@@ -33,9 +33,11 @@
     setupSimilar.classList.remove('hidden'); // показываем блок похожих волшебников
   };
 
-  // запускаем функцию hhtp запрос из модуля backend, ей передаем коллбеки:
-  // успех: отрисовать список волшебников по загруженным данным, ошибка: вывести сообщение об ошибке, адрес для получения, метод запроса
-  window.backend.makeRequest(renderList, window.utils.showError, GET_URL, 'GET');
+  // window.backend.makeRequest(renderList, window.utils.showError, GET_URL, 'GET');
+  // готовим http запрос c коллбеками на отрисовку волшебников в случае успешной загрузки и показе сообщения в случае ошибки
+  var loadSimWizardsXhr = window.backend.makeXhr(renderList, window.utils.showError);
+  // высылаем запрос
+  window.backend.load(loadSimWizardsXhr, GET_URL);
 
 
 })();
