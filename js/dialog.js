@@ -19,6 +19,7 @@
   var maxX = document.body.clientWidth - SETUP_WIDTH;
   var maxY = document.body.clientHeight - SETUP_HEIGHT;
 
+
   // обработчик нажатия кнопки мышки
   var onMouseDown = function (evt) {
     // опишем обработчик перемещения мышки
