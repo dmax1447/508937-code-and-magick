@@ -4,12 +4,18 @@
 
 (function () {
 
-  var getURL = 'https://js.dump.academy/code-and-magick/data';
-  var postURL = 'https://js.dump.academy/code-and-magick';
+  var GET_URL = 'https://js.dump.academy/code-and-magick/data';
+  var POST_URL = 'https://js.dump.academy/code-and-magick';
+  var TIMEOUT = 10000;
+  var Code = {
+    SUCCESS: 200,
+    NOT_FROUND_ERROR: 404,
+    SERVER_ERROR: 500
+  };
 
   window.backend = {
-    // функция загрузки данных, принимает параметры:
-    // onSucc
+
+    // функция загрузки данных
     load: function (onSuccess, onError) {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
@@ -26,13 +32,12 @@
       xhr.addEventListener('timeout', function () {
         onError('Список волшебников не загрузился: запрос не успел выполниться за ' + xhr.timeout + 'мс');
       });
-      xhr.timeout = 10000; // 10s
-      xhr.open('GET', getURL);
+      xhr.timeout = TIMEOUT; // 10s
+      xhr.open('GET', GET_URL);
       xhr.send();
     },
-    // функция сохрания данных формы, принимает параметры:
-    // data - данные формы для отправки
-    // onload (xhr.response) - коллбек который выполнится когда произойдет событие загрузки
+
+    // функция отправки данных
     save: function (data, onSuccess, onError) {
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
@@ -45,10 +50,54 @@
       xhr.addEventListener('timeout', function () {
         onError('Форма не загружена на сервер: запрос не успел выполниться за ' + xhr.timeout + 'мс');
       });
-      xhr.timeout = 10000; // 10s
-      xhr.open('POST', postURL);
+      xhr.timeout = TIMEOUT; // 10s
+      xhr.open('POST', POST_URL);
+      xhr.send(data);
+    },
+
+    // функция выполнения запроса, принимает параметры:
+    // data: данные для отправки
+    // onSuccses: коллбек на успешное завершение запроса
+    // onError: коллбек на НЕуспешное завершение запроса
+    // url: адрес сервиса, строка
+    // reqType: тип запроса, GET / POST, строка
+    makeRequest: function (onSuccess, onError, url, reqType, data) {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'json';
+      xhr.addEventListener('load', function () {
+        /*
+        if (xhr.status === Code.SUCCESS) {
+          onSuccess(xhr.response);
+        } else {
+          onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        }
+        */
+        switch (xhr.status) {
+          case Code.SUCCESS:
+            onSuccess(xhr.response);
+            break;
+          case Code.NOT_FROUND_ERROR:
+            onError('Адрес не найден (404)');
+            break;
+          case Code.SERVER_ERROR:
+            onError('Внутренняя ошибка сервера (500)');
+            break;
+          default:
+            onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+            break;
+        }
+      });
+      xhr.addEventListener('error', function () {
+        onError('Ошибка соединения');
+      });
+      xhr.addEventListener('timeout', function () {
+        onError('Данные не загружены: запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      });
+      xhr.timeout = TIMEOUT;
+      xhr.open(reqType, url);
       xhr.send(data);
     }
+
   };
 })();
 

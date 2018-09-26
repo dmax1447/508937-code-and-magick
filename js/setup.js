@@ -18,6 +18,7 @@
   var userNameInput = document.querySelector('.setup-user-name');
   var form = document.querySelector('.setup-wizard-form');
   var btnSubmit = document.querySelector('.setup-submit'); // кнопка
+  var POST_URL = 'https://js.dump.academy/code-and-magick';
 
   // функции открытия и закрытия окна setup
   var openSetupWindow = function () {
@@ -32,6 +33,14 @@
     var color = window.utils.getRandomElement(colors);
     domElement.style[domElementProperty] = color;
     inputElement.value = color;
+  };
+
+  // обработчик клика по кнопке сохранить
+  var onBtnSubmitClick = function (evt) {
+    evt.preventDefault(); // убираем действие по умолчанию
+    // запускаем функцию hhtp запрос из модуля backend, ей передаем коллбеки:
+    // успех: закрыть окно, ошибка: вывести сообщение об ошибке, адрес для отправки, метод запроса, данные
+    window.backend.makeRequest(closeSetupWindow, window.utils.showError, POST_URL, 'POST', new FormData(form));
   };
 
   // добавляем обработчик: открытие окна по клику на иконку пользователя
@@ -93,16 +102,7 @@
     }
   });
 
-  // обработчик клика по кнопке сохранить
-  var onBtnSubmitClick = function (evt) {
-
-    // запускаем функцию save из модуля backend, ей передаем объект FormData сгенерированный из данных формы
-    // и в качестве коллбека на успешное завершение - функцию закрытия окна
-    window.backend.save(new FormData(form), closeSetupWindow, window.utils.showError);
-    evt.preventDefault(); // убираем действие по умолчанию
-  };
-
-  // добавляем обработчик на кнопку отправить
+  // добавляю обработчик нажатия на кнопку сохранить
   btnSubmit.addEventListener('click', onBtnSubmitClick);
 
 })();

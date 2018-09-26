@@ -7,6 +7,7 @@
 
   var wizardList = document.querySelector('.setup-similar-list'); // находим список волшебников сохраняем в wizardList
   var setupSimilar = document.querySelector('.setup-similar'); // блок похожих волшебников
+  var GET_URL = 'https://js.dump.academy/code-and-magick/data';
 
   // функция для отрисовки волшебника. Вернет сгенерированный DOM элемент согласно шаблону и  переданным данным в виде JS объекта
   var renderWizard = function (wizardData) {
@@ -32,10 +33,9 @@
     setupSimilar.classList.remove('hidden'); // показываем блок похожих волшебников
   };
 
-  // коллбек на ошибку, показывает сообщение с описанием ошибки
-  // загрузка списка волшебников с сервера
-  // при успешной загрузке зовет коллбек renderList (рисует список похожих волшебников)
-  // при ошибке зовет функцию показа ошибки
-  window.backend.load(renderList, window.utils.showError);
+  // запускаем функцию hhtp запрос из модуля backend, ей передаем коллбеки:
+  // успех: отрисовать список волшебников по загруженным данным, ошибка: вывести сообщение об ошибке, адрес для получения, метод запроса
+  window.backend.makeRequest(renderList, window.utils.showError, GET_URL, 'GET');
+
 
 })();
