@@ -18,7 +18,6 @@
   var userNameInput = document.querySelector('.setup-user-name');
   var form = document.querySelector('.setup-wizard-form');
   var btnSubmit = document.querySelector('.setup-submit'); // кнопка
-  var POST_URL = 'https://js.dump.academy/code-and-magick';
 
   // функции открытия и закрытия окна setup
   var openSetupWindow = function () {
@@ -38,10 +37,8 @@
   // обработчик клика по кнопке сохранить
   var onBtnSubmitClick = function (evt) {
     evt.preventDefault(); // убираем действие по умолчанию
-    // готовим запрос, при успехе - коллбек на закрытие окна, при ошибке - вывести ошибку
-    var saveFormDataXhr = window.backend.makeXhr(closeSetupWindow, window.utils.showError);
-    // высылаем запрос с данными
-    window.backend.save(saveFormDataXhr, POST_URL, new FormData(form));
+    // пытаемся отправить данные формы, при успехе - коллбек на закрытие окна, при ошибке - вывести ошибку
+    window.backend.sendFormData(closeSetupWindow, window.utils.showError, new FormData(form));
   };
 
   // добавляем обработчик: открытие окна по клику на иконку пользователя
