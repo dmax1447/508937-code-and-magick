@@ -7,8 +7,6 @@
 
   var wizardList = document.querySelector('.setup-similar-list'); // находим список волшебников сохраняем в wizardList
   var setupSimilar = document.querySelector('.setup-similar'); // блок похожих волшебников
-  // window.similarwizards = [];
-
 
   // функция для отрисовки волшебника. Вернет сгенерированный DOM элемент согласно шаблону и  переданным данным в виде JS объекта
   var renderWizard = function (wizardData) {
