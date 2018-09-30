@@ -18,7 +18,7 @@
   var userNameInput = document.querySelector('.setup-user-name');
   var form = document.querySelector('.setup-wizard-form');
   var btnSubmit = document.querySelector('.setup-submit'); // кнопка
-
+  var wizardList = document.querySelector('.setup-similar-list'); // список похожих волшеюников
   // функции открытия и закрытия окна setup
   var openSetupWindow = function () {
     setupWindow.classList.remove('hidden');
@@ -27,11 +27,22 @@
     setupWindow.classList.add('hidden');
   };
 
-  // функция для изменения цвета элемента волшебника и соответствующего инпута
+  // коллбек по изменению цвета элементов персонажа
   var setColor = function (domElement, domElementProperty, colors, inputElement) {
-    var color = window.utils.getRandomElement(colors);
-    domElement.style[domElementProperty] = color;
-    inputElement.value = color;
+    var color = window.utils.getRandomElement(colors); // берем случайный цвет из полученного диапазона
+    domElement.style[domElementProperty] = color; // меняем цвет заданного элемента на сгенерированный
+    inputElement.value = color; // обновляем значение соответствующего инпута
+    window.setup.currentWizard.colorEyes = inputEyesColor.value; // сохраняем цвета инпутов
+    window.setup.currentWizard.colorCoat = inputCoatColor.value;
+    window.setup.currentWizard.colorFireball = inputFireball.value;
+    window.setup.wizardsData.forEach(window.simwiz.addSimilarityData); // рассчитываем похожесть по сохранным данным о инпутах
+    window.setup.wizardsData.sort(window.simwiz.sortBySimilarity); // сортируем по перерасчитанному критерию похожести
+    var newWizards = window.simwiz.renderList(window.setup.wizardsData); // рендерим новый список похожих и сохраяем в фрагмент
+    while (wizardList.firstChild) { // удаляем все дочерние дом ноды из списка похожих волшебников
+      wizardList.removeChild(wizardList.firstChild);
+    }
+    wizardList.appendChild(newWizards); // заполняем список новыми
+
   };
 
   // обработчик клика по кнопке сохранить
@@ -103,5 +114,16 @@
   // добавляю обработчик нажатия на кнопку сохранить
   btnSubmit.addEventListener('click', onBtnSubmitClick);
 
-})();
 
+
+  // экспортирую данные о параметрах текущего волшебника
+  window.setup = {
+    currentWizard: {
+      name: userNameInput.value,
+      colorEyes: inputEyesColor.value,
+      colorCoat: inputCoatColor.value,
+      colorFireball: inputFireball.value
+    },
+    wizardData: [],
+  };
+})();
