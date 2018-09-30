@@ -36,9 +36,10 @@
     var color = window.utils.getRandomElement(colors); // берем случайный цвет из полученного диапазона
     domElement.style[domElementProperty] = color; // меняем цвет заданного элемента на сгенерированный
     inputElement.value = color; // обновляем значение соответствующего инпута
-    debounce(updateSimilarWizards);
+    debounce(updateSimilarWizards); // вызываем функцию debounce c коллбеком на обновление списка волшебников
   };
 
+  // функция обновления списка похожих волшебников
   var updateSimilarWizards = function () {
     window.setup.currentWizard.colorEyes = inputEyesColor.value; // сохраняем цвета инпутов
     window.setup.currentWizard.colorCoat = inputCoatColor.value;
@@ -49,9 +50,10 @@
     while (wizardList.firstChild) { // удаляем все дочерние дом ноды из списка похожих волшебников
       wizardList.removeChild(wizardList.firstChild);
     }
-    wizardList.appendChild(newWizards);
+    wizardList.appendChild(newWizards); // рисуем новых похожих волшебников
   };
 
+  // функция debounce
   var debounce = function (fun) {
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
